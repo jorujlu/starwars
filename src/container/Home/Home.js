@@ -1,29 +1,32 @@
 import React, { Component } from "react";
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import Ships from "../Ships/Ships";
 import ShipInfo from "../ShipInfo/ShipInfo";
 import "./Home.css"
 
 class Home extends Component {
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = {
 
         }
     }
 
-    render () {
+    render() {
         return (
             <div className="Home">
                 <header>
                     <nav>
                         <ul>
-                            <li><Link to="/">Home</Link></li>
+                            <li><Link to={"/ships/" + 1} >Home</Link></li>
                         </ul>
                     </nav>
                 </header>
-                <Route path="/" exact component={Ships} />
-                <Route path="/ship-info" component={ShipInfo} />
+                <Switch>
+                    <Route path="/ships/:pageNum" component={Ships} />
+                    <Route path="/ship-info/:id" component={ShipInfo} />
+                    <Redirect exact from="/" to={"/ships/" + 1} />
+                </Switch>
             </div>
         )
     }
