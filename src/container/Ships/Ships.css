@@ -1,0 +1,2 @@
+/* <Route path='/ships/:pageNumber' render={ ()=> 4<pageNUmber<5 ? realPage : Redirec to page1}>
+ */

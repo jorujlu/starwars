@@ -1,0 +1,10 @@
+
+
+.Ship {
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    width: 200px;
+    height: 150px;
+    margin: auto;
+}
