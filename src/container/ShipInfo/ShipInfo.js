@@ -1,21 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 
 
-class ShipInfo extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <h1> This is Ship Info Page </h1>
-            </div>
-        )
-    }
+const ShipInfo = props => {
+    return (
+        <div>
+            <h1> This is Ship Info Page </h1>
+        </div >
+    );
 }
 
 export default ShipInfo;

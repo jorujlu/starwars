@@ -1,7 +1,7 @@
 import React from "react";
 import "./Ship.css"
 
-const ship = (props) => {
+const ship = props => {
     return (
         <div className="Ship">
             <h3>{props.name}</h3>
