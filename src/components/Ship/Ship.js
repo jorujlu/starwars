@@ -36,7 +36,7 @@ const ship = props => {
             '&:hover::after': {
                 opacity: "1",
             }
-            
+
         }}>
             <h3 >{props.name}</h3>
             <p>{props.model}</p>

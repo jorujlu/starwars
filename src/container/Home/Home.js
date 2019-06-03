@@ -8,7 +8,7 @@ const Home = () => {
     return (
         <div >
             <header>
-                <h1 css={{color: "#6200ee"}}>May The Force Be With You!</h1>
+                <h1 css={{ color: "#6200ee" }}>May The Force Be With You!</h1>
             </header>
             <Switch>
                 <Route exact path="/ships" component={Ships} />
