@@ -1,3 +1,5 @@
+import * as actionTypes from "../actionTypes"
+
 let initialState = {
     ships: [],
     people: [],
@@ -9,20 +11,20 @@ let initialState = {
 const rootReducer = (state = initialState, action) => {
     let newState = {};
     switch (action.type) {
-        case 'LOAD_PEOPLE':
+        case actionTypes.LOAD_PEOPLE:
             newState = { ...state, people: action.payload.people }
             break;
-        case 'LOAD_SHIPS':
+        case actionTypes.LOAD_SHIPS:
             let ships = [...state.ships].concat(action.payload.ships);
             newState = { ...state, ships };
             break;
-        case 'SET_LOADING':
+        case actionTypes.SET_LOADING:
             newState = { ...state, loading: action.payload.loading };
             break;
-        case 'INCREMENT_PAGE_NUM':
+        case actionTypes.INCREMENT_PAGE_NUM:
             newState = { ...state, pageNum: action.payload.pageNum };
             break;
-        case "FETCH_SHIP":
+        case actionTypes.FETCH_SHIP:
             newState = { ...state, currentShip: action.payload.ship };
             break;
         default:

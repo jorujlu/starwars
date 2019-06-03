@@ -4,10 +4,11 @@ import { NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-
+import * as actionTypes from "../../store/actionTypes"
 
 import './Ships.css'
-class Ships extends Component {
+export class Ships extends Component {
+
     loadDataOnScroll = () => {
         if (this.props.pageNum < 5) {
             this.props.setLoading(true);
@@ -101,10 +102,10 @@ class Ships extends Component {
 }
 const mapDispachToProps = dispatch => {
     return {
-        loadPeople: (people) => dispatch({ type: 'LOAD_PEOPLE', payload: { people } }),
-        loadShips: (ships) => dispatch({ type: "LOAD_SHIPS", payload: { ships } }),
-        setLoading: (loading) => dispatch({ type: "SET_LOADING", payload: { loading } }),
-        incrementPageNum: (pageNum) => dispatch({ type: "INCREMENT_PAGE_NUM", payload: { pageNum } }),
+        loadPeople: (people) => dispatch({ type: actionTypes.LOAD_PEOPLE, payload: { people } }),
+        loadShips: (ships) => dispatch({ type: actionTypes.LOAD_SHIPS, payload: { ships } }),
+        setLoading: (loading) => dispatch({ type: actionTypes.SET_LOADING, payload: { loading } }),
+        incrementPageNum: (pageNum) => dispatch({ type: actionTypes.INCREMENT_PAGE_NUM, payload: { pageNum } }),
     }
 }
 
