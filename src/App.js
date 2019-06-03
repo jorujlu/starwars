@@ -1,9 +1,10 @@
-import React from 'react';
-import './App.css';
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './store/reducers/rootReducer';
+
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 
 import Home from "./container/Home/Home"
 
@@ -13,13 +14,16 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <div className="App">
+        <div 
+          className="App" 
+          css={{
+            height: "100%",
+            textAlign: "center"
+          }}>
           <Home />
         </div>
       </BrowserRouter>
-
     </Provider>
-
   );
 }
 

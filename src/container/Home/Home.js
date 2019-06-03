@@ -1,14 +1,14 @@
-import React from "react";
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Ships from "../Ships/Ships";
 import ShipInfo from "../ShipInfo/ShipInfo";
-import "./Home.css"
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 
 const Home = () => {
     return (
-        <div className="Home">
+        <div >
             <header>
-                <h1>May The Force Be With You!</h1>
+                <h1 css={{color: "#6200ee"}}>May The Force Be With You!</h1>
             </header>
             <Switch>
                 <Route exact path="/ships" component={Ships} />

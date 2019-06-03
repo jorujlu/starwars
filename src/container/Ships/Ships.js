@@ -1,27 +1,16 @@
 import React, { Component } from "react";
 import Ship from "../../components/Ship/Ship"
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
+
 
 import './Ships.css'
 class Ships extends Component {
-
-    // loadData = (currentPage) => {
-    //     fetch("https://swapi.co/api/starships/?page=" + currentPage)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (!lodash.isEqual(data.results, this.state.ships)) {
-    //                 this.setState({ ships: data.results, pageNum: currentPage, loading: false });
-    //             }
-    //         }).catch(e => console.log(e));
-    // };
-
     loadDataOnScroll = () => {
-        console.log('here');
-        
         if (this.props.pageNum < 5) {
             this.props.setLoading(true);
-            
             fetch("https://swapi.co/api/starships/?page=" + this.props.pageNum)
                 .then(response => response.json())
                 .then(data => {
@@ -33,33 +22,21 @@ class Ships extends Component {
                     });
                     this.props.incrementPageNum(this.props.pageNum + 1);
                     this.props.loadShips(ships);
-                    this.props.setLoading(false);
-                    
+                    fetch("https://swapi.co/api/people/")
+                        .then(response => response.json())
+                        .then(data => {
+                            this.props.loadPeople(data.results);
+                            this.props.setLoading(false);
+                        }).catch(e => console.log(e));
+
                 }).catch(e => console.log(e));
         }
     }
 
     componentDidMount() {
-        console.log('Mounting');
-
         window.addEventListener('scroll', this.onScroll, false);
-        // const currentPage = parseInt(this.props.match.params.pageNum);
-        // if (currentPage < 1 || currentPage > 4) {
-        //     this.props.history.push('/ships/1');
-        // } else {
         this.loadDataOnScroll();
-        // }
     }
-
-
-    // componentDidUpdate() {
-    //     const currentPage = parseInt(this.props.match.params.pageNum);
-    //     if (currentPage < 1 || currentPage > 4) {
-    //         this.props.history.push('/ships/1');
-    //     } else {
-    //         this.loadData(currentPage);
-    //     }
-    // }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.onScroll, false);
@@ -67,67 +44,64 @@ class Ships extends Component {
 
 
     onScroll = () => {
-        if (
-            (window.innerHeight + window.scrollY) >= (document.body.offsetHeight)
-        ) {
-            // this.setState({ loading: true })
-
-            this.loadDataOnScroll();
-            // console.log("here")
+        if (!this.props.loading) {
+            if (
+                (window.innerHeight + window.scrollY) >= (document.body.offsetHeight)
+            ) {
+                this.loadDataOnScroll();
+            }
         }
+
     }
-
-    // prevClickHandler = () => {
-    //     if (this.state.pageNum > 1) {
-    //         this.setState({ loading: true });
-    //         let prevPage = this.state.pageNum - 1;
-    //         this.props.history.push("/ships/" + prevPage);
-    //         this.setState((prevState, props) => {
-    //             return { pageNum: prevState.pageNum - 1 };
-    //         });
-    //     }
-    // }
-
-    // nextClickHandler = () => {
-    //     if (this.state.pageNum < 4) {
-    //         this.setState({ loading: true });
-    //         let nextPage = this.state.pageNum + 1;
-    //         this.props.history.push("/ships/" + nextPage);
-    //         this.setState((prevState, props) => {
-    //             return { pageNum: prevState.pageNum + 1 };
-    //         });
-    //     }
-    // }
-
     render() {
-        const { ships, loading } = this.props;
-        console.log(this.props.pageNum);
-        console.log(ships);
-        
+        const { ships, loading, people } = this.props;
 
+        let shipCards = null;
+        if (people.length > 0 && ships.length > 0) {
+            shipCards = (ships.map((ship, index) =>
+                (index % 8 === 0 && index !== 0) ?
+                    <React.Fragment key={ship.id}>
+                        <h1>{people[index % 10].name}</h1>
+                        <NavLink
+                            css={{
+                                textDecoration: "none",
+                                display: "block",
+                                margin: "auto",
+                                width: "50%",
+                                height: "150px",
+                                marginTop: "20px"
+                            }}
+                            to={"/ship-info/" + ship.id} >
+                            <Ship name={ship.name} model={ship.model} manufacturer={ship.manufacturer} />
+                        </NavLink>
+                    </React.Fragment> :
 
-
-
-        let shipCards = (ships.map(ship =>
-            <Link key={ship.id} to={"/ship-info/" + ship.id} >
-                <Ship name={ship.name} model={ship.model} manufacturer={ship.manufacturer} />
-            </Link>
-        ));
+                    <NavLink
+                        css={{
+                            textDecoration: "none",
+                            display: "block",
+                            margin: "auto",
+                            width: "50%",
+                            height: "150px",
+                            marginTop: "40px"
+                        }}
+                        key={ship.id}
+                        to={"/ship-info/" + ship.id} >
+                        <Ship name={ship.name} model={ship.model} manufacturer={ship.manufacturer} />
+                    </NavLink>));
+        }
 
         return (
-            <div>
-                {/* <button disabled={pageNum === 1} onClick={this.prevClickHandler}>prev</button>
-                <button disabled={pageNum === 4} onClick={this.nextClickHandler}>next</button> */}
+            <React.Fragment>
                 {shipCards}
-                <div className="Spinner-Container">
-                    {loading ? <div className="lds-dual-ring"></div> : <h3 style={{ marginTop: "50px" }}>We are out of ships... :(</h3>}
-                </div>
-            </div>
+                {loading ? <div className="lds-dual-ring"></div> : <h1>We are out of ships... :(</h1>}
+            </React.Fragment>
         )
     }
 }
 const mapDispachToProps = dispatch => {
     return {
+        loadPeople: (people) => dispatch({ type: 'LOAD_PEOPLE', payload: { people } }),
         loadShips: (ships) => dispatch({ type: "LOAD_SHIPS", payload: { ships } }),
         setLoading: (loading) => dispatch({ type: "SET_LOADING", payload: { loading } }),
         incrementPageNum: (pageNum) => dispatch({ type: "INCREMENT_PAGE_NUM", payload: { pageNum } }),
@@ -136,6 +110,7 @@ const mapDispachToProps = dispatch => {
 
 const mapPropsToState = state => {
     return {
+        people: state.people,
         ships: state.ships,
         pageNum: state.pageNum,
         loading: state.loading
